@@ -3,6 +3,7 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using WebUI.Filters;
 using WebUI.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -19,9 +20,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
-            //services.AddControllersWithViews(options =>
-            //    options.Filters.Add<ApiExceptionFilterAttribute>())
-            //        .AddFluentValidation(x => x.AutomaticValidationEnabled = false);
+            services.AddControllers(opt =>
+            {
+                opt.Filters.Add<ApiExceptionFilterAttribute>();
+            });
 
             // Customise default API behaviour
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
